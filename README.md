@@ -4,8 +4,6 @@ A real-time collaborative whiteboard application with advanced admin features, u
 
 ## 🚀 Deployment
 
-[![Deploy on Vercel](https://vercel.com/button)](https://white-board-grid-editor.vercel.app/)
-
 Visit the deployed app here:  
 🔗 [https://white-board-grid-editor.vercel.app](https://white-board-grid-editor.vercel.app/)
 
