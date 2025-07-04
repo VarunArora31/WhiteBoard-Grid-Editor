@@ -2,6 +2,14 @@
 
 A real-time collaborative whiteboard application with advanced admin features, user management, and live cursor tracking.
 
+## 🚀 Deployment
+
+[![Deploy on Vercel](https://vercel.com/button)](https://white-board-grid-editor.vercel.app/)
+
+Visit the deployed app here:  
+🔗 [https://white-board-grid-editor.vercel.app](https://white-board-grid-editor.vercel.app/)
+
+
 ## 🚀 New Features
 
 ### Admin System
