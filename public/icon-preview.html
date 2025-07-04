@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Whiteboard Icon Preview</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0; }
+        .icon-container { display: flex; gap: 20px; align-items: center; margin: 20px 0; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .icon-size { text-align: center; }
+        .icon-size h3 { margin: 0 0 10px 0; color: #333; }
+        img, svg { border: 1px solid #ddd; border-radius: 4px; }
+        .demo { background: #333; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .demo h3 { color: white; margin: 0 0 10px 0; }
+        .browser-tab { background: #e8e8e8; padding: 10px; border-radius: 4px 4px 0 0; border: 1px solid #ccc; display: inline-flex; align-items: center; gap: 8px; }
+        .browser-content { background: white; padding: 20px; border: 1px solid #ccc; border-top: none; }
+    </style>
+</head>
+<body>
+    <h1>🎨 Collaborative Whiteboard Icons</h1>
+    <p>New icons for the collaborative whiteboard app, replacing the heart icon.</p>
+    
+    <div class="icon-container">
+        <div class="icon-size">
+            <h3>Favicon (32x32)</h3>
+            <img src="favicon.svg" width="32" height="32" alt="Favicon">
+        </div>
+        <div class="icon-size">
+            <h3>App Icon (64x64)</h3>
+            <img src="whiteboard-icon.svg" width="64" height="64" alt="App Icon">
+        </div>
+        <div class="icon-size">
+            <h3>Large (128x128)</h3>
+            <img src="whiteboard-icon.svg" width="128" height="128" alt="Large Icon">
+        </div>
+    </div>
+    
+    <div class="demo">
+        <h3>Browser Tab Preview</h3>
+        <div class="browser-tab">
+            <img src="favicon.svg" width="16" height="16" alt="Favicon">
+            <span>Collaborative Whiteboard</span>
+        </div>
+        <div class="browser-content">
+            <p>This is how the icon will appear in browser tabs</p>
+        </div>
+    </div>
+    
+    <h2>📝 Features of the New Icon</h2>
+    <ul>
+        <li>🎨 <strong>Whiteboard theme</strong> - Shows an actual whiteboard with drawings</li>
+        <li>🌈 <strong>Modern gradient</strong> - Blue to purple gradient matching the app</li>
+        <li>✏️ <strong>Pen/pencil element</strong> - Indicates drawing functionality</li>
+        <li>🎯 <strong>Clear at small sizes</strong> - Recognizable even at 16x16 pixels</li>
+        <li>📱 <strong>Mobile-friendly</strong> - Works as app icon on phones</li>
+        <li>🔄 <strong>Scalable SVG</strong> - Crisp at any size</li>
+    </ul>
+    
+    <h2>🔧 Technical Details</h2>
+    <ul>
+        <li><code>favicon.svg</code> - Modern SVG favicon (32x32 optimized)</li>
+        <li><code>whiteboard-icon.svg</code> - Full app icon (64x64 with details)</li>
+        <li><code>favicon.ico</code> - Fallback ICO file for older browsers</li>
+        <li>Theme color: <span style="background: #3b82f6; color: white; padding: 2px 6px; border-radius: 3px;">#3b82f6</span></li>
+    </ul>
+</body>
+</html>
