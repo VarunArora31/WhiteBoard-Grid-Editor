@@ -79,7 +79,7 @@ export const useRooms = () => {
       .from('drawing_strokes')
       .delete()
       .eq('room_id', roomId)
-      .select('*', { count: 'exact' });
+      .select();
 
     if (strokesError) {
       console.error('❌ Error deleting room strokes:', {
@@ -101,7 +101,7 @@ export const useRooms = () => {
       .from('rooms')
       .delete()
       .eq('id', roomId)
-      .select('*', { count: 'exact' });
+      .select();
 
     if (roomError) {
       console.error('❌ Error deleting room:', {
