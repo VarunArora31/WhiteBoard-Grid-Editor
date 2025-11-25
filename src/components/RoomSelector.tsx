@@ -1,32 +1,58 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Users, Calendar } from 'lucide-react';
+import { Plus, Users, Calendar, Palette, Brush, Trash2 } from 'lucide-react';
 import { useRooms, Room } from '@/hooks/useRooms';
 import { formatDistanceToNow } from 'date-fns';
+import { toast } from 'sonner';
 
 interface RoomSelectorProps {
   onRoomSelect: (roomId: string) => void;
 }
 
 export const RoomSelector = ({ onRoomSelect }: RoomSelectorProps) => {
-  const { rooms, loading, createRoom } = useRooms();
+  const { rooms, loading, createRoom, deleteRoom } = useRooms();
   const [newRoomName, setNewRoomName] = useState('');
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [creating, setCreating] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState('');
+  const [deletingRoomId, setDeletingRoomId] = useState<string | null>(null);
 
   const generateUserId = () => {
     return Math.random().toString(36).substr(2, 9);
   };
 
+  // Get or create a persistent user ID
+  useEffect(() => {
+    let userId = localStorage.getItem('whiteboard_user_id');
+    if (!userId) {
+      userId = generateUserId();
+      localStorage.setItem('whiteboard_user_id', userId);
+    }
+    console.log('Current User ID:', userId);
+    setCurrentUserId(userId);
+  }, []);
+
+  // Debug: Log rooms data
+  useEffect(() => {
+    if (rooms.length > 0) {
+      console.log('Rooms data:', rooms.map(r => ({ 
+        name: r.name, 
+        admin_id: r.admin_id, 
+        isOwner: r.admin_id === currentUserId 
+      })));
+      console.log('Current user ID:', currentUserId);
+    }
+  }, [rooms, currentUserId]);
+
   const handleCreateRoom = async () => {
-    if (!newRoomName.trim() || creating) return;
+    if (!newRoomName.trim() || creating || !currentUserId) return;
 
     setCreating(true);
-    const room = await createRoom(newRoomName.trim());
+    const room = await createRoom(newRoomName.trim(), currentUserId);
     if (room) {
       setNewRoomName('');
       setIsCreateDialogOpen(false);
@@ -35,19 +61,44 @@ export const RoomSelector = ({ onRoomSelect }: RoomSelectorProps) => {
     setCreating(false);
   };
 
+  const handleDeleteRoom = async (roomId: string, roomName: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    
+    if (!confirm(`Are you sure you want to delete "${roomName}"? This action cannot be undone.`)) {
+      return;
+    }
+
+    if (!currentUserId) {
+      toast.error('User ID not found');
+      return;
+    }
+
+    setDeletingRoomId(roomId);
+    const success = await deleteRoom(roomId, currentUserId);
+    setDeletingRoomId(null);
+    
+    if (!success) {
+      toast.error('Failed to delete room');
+    }
+  };
+
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4 sm:p-6">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-emerald-25 to-teal-50 p-4 sm:p-6" style={{backgroundColor: '#f0fdf4'}}>
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8 sm:mb-12">
           <div className="mb-4">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg">
-              <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-              </svg>
+            <div className="relative w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-4">
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full blur-xl opacity-60 animate-pulse"></div>
+              <div className="relative w-full h-full bg-gradient-to-br from-emerald-500 via-green-500 to-teal-600 rounded-full flex items-center justify-center shadow-2xl border-4 border-white">
+                <div className="relative">
+                  <Palette className="w-9 h-9 sm:w-11 sm:h-11 text-white" />
+                  <Brush className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-200 absolute -bottom-1 -right-1 rotate-45" />
+                </div>
+              </div>
             </div>
           </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
             Collaborative Whiteboard
           </h1>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -63,7 +114,7 @@ export const RoomSelector = ({ onRoomSelect }: RoomSelectorProps) => {
           
           <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 px-6 py-2">
+              <Button className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 px-6 py-2">
                 <Plus className="w-4 h-4 mr-2" />
                 Create New Room
               </Button>
@@ -124,12 +175,24 @@ export const RoomSelector = ({ onRoomSelect }: RoomSelectorProps) => {
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <CardTitle 
-                      className="text-lg font-bold text-gray-800 group-hover:text-blue-600 transition-colors cursor-pointer flex-1"
+                      className="text-lg font-bold text-gray-800 group-hover:text-emerald-600 transition-colors cursor-pointer flex-1"
                       onClick={() => onRoomSelect(room.id)}
                     >
                       {room.name}
                     </CardTitle>
                     <div className="flex items-center gap-2">
+                      {room.admin_id === currentUserId && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50"
+                          onClick={(e) => handleDeleteRoom(room.id, room.name, e)}
+                          disabled={deletingRoomId === room.id}
+                          title="Delete room"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      )}
                       <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
                     </div>
                   </div>
@@ -142,7 +205,7 @@ export const RoomSelector = ({ onRoomSelect }: RoomSelectorProps) => {
                         {formatDistanceToNow(new Date(room.created_at), { addSuffix: true })}
                       </span>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-blue-600 font-medium">
+                    <div className="flex items-center gap-2 text-sm text-emerald-600 font-medium">
                       <Users className="w-4 h-4" />
                       <span>Join & Draw</span>
                     </div>

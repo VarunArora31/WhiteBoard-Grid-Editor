@@ -52,13 +52,13 @@ All colors MUST be HSL.
 
     --sidebar-border: 220 13% 91%;
 
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-ring: 142 76% 45%;
 
     /* Whiteboard specific colors */
     --canvas-background: 0 0% 98%;
     --canvas-border: 214.3 31.8% 91.4%;
-    --tool-active: 221.2 83.2% 53.3%;
-    --tool-hover: 221.2 83.2% 65%;
+    --tool-active: 142 76% 40%;
+    --tool-hover: 142 76% 50%;
   }
 
   .dark {
@@ -91,18 +91,18 @@ All colors MUST be HSL.
     --ring: 212.7 26.8% 83.9%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary: 142 76% 45%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-ring: 142 76% 50%;
 
     /* Whiteboard specific colors - dark mode */
     --canvas-background: 217.2 32.6% 17.5%;
     --canvas-border: 217.2 32.6% 25%;
-    --tool-active: 217.2 91.2% 59.8%;
-    --tool-hover: 217.2 91.2% 70%;
+    --tool-active: 142 76% 50%;
+    --tool-hover: 142 76% 60%;
   }
 }
 

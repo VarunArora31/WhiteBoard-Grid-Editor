@@ -74,16 +74,16 @@ export const WhiteboardCanvas = ({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-2 sm:p-4">
-      <div className="max-w-7xl mx-auto">
+    <div className="h-screen flex flex-col bg-gradient-to-br from-emerald-50 via-emerald-25 to-teal-50 p-2" style={{backgroundColor: '#f0fdf4'}}>
+      <div className="flex-1 flex flex-col">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 bg-white/70 backdrop-blur-sm rounded-lg p-3 sm:p-4 shadow-md">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-2 bg-white/70 backdrop-blur-sm rounded-lg p-2 sm:p-3 shadow-md">
           <div className="flex items-center gap-3">
             <Button variant="outline" onClick={onBack} size="sm" className="shrink-0">
               <ArrowLeft className="w-4 h-4 sm:mr-2" />
               <span className="hidden sm:inline">Back to Rooms</span>
             </Button>
-            <h1 className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-base sm:text-xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
               Collaborative Whiteboard
             </h1>
           </div>
@@ -93,52 +93,47 @@ export const WhiteboardCanvas = ({
           </div>
         </div>
 
-        <div className="space-y-4">
-          {/* Drawing Toolbar */}
-          <DrawingToolbar
-            strokeColor={strokeColor}
-            setStrokeColor={setStrokeColor}
-            strokeWidth={strokeWidth}
-            setStrokeWidth={setStrokeWidth}
-            isEraser={isEraser}
-            setIsEraser={setIsEraser}
-            onClear={clearCanvas}
-            onUndo={undo}
-            onRedo={redo}
-            onExport={exportCanvas}
-            onShare={handleShare}
-            canUndo={canUndo}
-            canRedo={canRedo}
-            connectedUsers={connectedUsers}
-          />
+        {/* Drawing Toolbar */}
+        <DrawingToolbar
+          strokeColor={strokeColor}
+          setStrokeColor={setStrokeColor}
+          strokeWidth={strokeWidth}
+          setStrokeWidth={setStrokeWidth}
+          isEraser={isEraser}
+          setIsEraser={setIsEraser}
+          onClear={clearCanvas}
+          onUndo={undo}
+          onRedo={redo}
+          onExport={exportCanvas}
+          onShare={handleShare}
+          canUndo={canUndo}
+          canRedo={canRedo}
+          connectedUsers={connectedUsers}
+        />
 
-          {/* Canvas Container */}
-          <Card className="relative overflow-auto shadow-xl border-0 bg-white/90 backdrop-blur-sm" style={{ height: 'calc(100vh - 320px)' }}>
-            <div className="relative w-full h-full min-h-[400px]">
-              <canvas
-                ref={canvasRef}
-                className={`absolute inset-0 bg-white rounded-lg ${
-                  isEraser ? 'cursor-grab' : 'cursor-crosshair'
-                }`}
-                width={1200}
-                height={800}
-                onMouseDown={startDrawing}
-                onMouseMove={draw}
-                onMouseUp={stopDrawing}
-                onMouseLeave={stopDrawing}
-                onTouchStart={startDrawing}
-                onTouchMove={draw}
-                onTouchEnd={stopDrawing}
-                style={{ 
-                  touchAction: 'none',
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain'
-                }}
-              />
-            </div>
-          </Card>
-        </div>
+        {/* Canvas Container */}
+        <Card className="relative flex-1 overflow-hidden shadow-xl border-0 bg-white/90 backdrop-blur-sm mt-2">
+          <div className="relative w-full h-full">
+            <canvas
+              ref={canvasRef}
+              className={`w-full h-full bg-white rounded-lg ${
+                isEraser ? 'cursor-grab' : 'cursor-crosshair'
+              }`}
+              width={1200}
+              height={800}
+              onMouseDown={startDrawing}
+              onMouseMove={draw}
+              onMouseUp={stopDrawing}
+              onMouseLeave={stopDrawing}
+              onTouchStart={startDrawing}
+              onTouchMove={draw}
+              onTouchEnd={stopDrawing}
+              style={{ 
+                touchAction: 'none'
+              }}
+            />
+          </div>
+        </Card>
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ export interface Room {
   name: string;
   created_at: string;
   updated_at: string;
+  admin_id: string;
 }
 
 export const useRooms = () => {
@@ -32,10 +33,10 @@ export const useRooms = () => {
     setLoading(false);
   };
 
-  const createRoom = async (name: string) => {
+  const createRoom = async (name: string, adminId: string) => {
     const { data, error } = await supabase
       .from('rooms')
-      .insert([{ name }])
+      .insert([{ name, admin_id: adminId }])
       .select()
       .single();
 
@@ -50,8 +51,27 @@ export const useRooms = () => {
     return data;
   };
 
-  const deleteRoom = async (roomId: string) => {
+  const deleteRoom = async (roomId: string, userId: string) => {
     console.log('🗑️ Starting room deletion process for roomId:', roomId);
+    
+    // First, verify that the user is the admin of the room
+    const { data: room, error: fetchError } = await supabase
+      .from('rooms')
+      .select('admin_id')
+      .eq('id', roomId)
+      .single();
+    
+    if (fetchError) {
+      console.error('❌ Error fetching room:', fetchError);
+      toast.error('Failed to verify room ownership');
+      return false;
+    }
+    
+    if (!room || room.admin_id !== userId) {
+      console.error('❌ User is not authorized to delete this room');
+      toast.error('Only the room creator can delete this room');
+      return false;
+    }
     
     // First delete all drawing strokes in the room
     console.log('🔍 Deleting drawing strokes for room:', roomId);
